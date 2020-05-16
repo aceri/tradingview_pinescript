@@ -1,0 +1,8 @@
+study("My Script 1")
+
+p=100
+
+
+zs=(close-linreg(close,p,1))/stdev(close,p)
+
+plot(zs, color=white, style=line, linewidth=1)

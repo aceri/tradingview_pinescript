@@ -1,0 +1,13 @@
+//@version=2
+study("LC2",overlay=true)
+
+L1=linreg(close,126,0)
+L2=linreg(close,14,0)
+
+p=L1>L2? 1 : L1<L2  ? 2 :p[1]
+
+
+plot(L1,color=yellow,style=line)
+plot(L2,color=red,style=line)
+
+//plot(close,color=p==1 or p[1]==1?green:p==2 or p[1]==2?red:na,style=line,linewidth=2)

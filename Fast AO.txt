@@ -1,0 +1,12 @@
+study("Fast AO")
+p1 = input(5, minval=2, title="p1")
+p2 = input(30, minval=2, title="p2")
+p3 = input(34, minval=2, title="p3")
+p4 = input(30, minval=2, title="p4")
+L1 = input(1, minval=1, title="L1")
+nLengthFast = input(9, minval=1, title="Length Fast")
+xSMA1_hl2 = linreg(linreg(hl2,p1,0), p2,0)
+xSMA2_hl2 = linreg(linreg(hl2,p3,0), p4,0)
+xSMA1_SMA2 = xSMA1_hl2 - xSMA2_hl2
+cClr = xSMA1_SMA2 > xSMA1_SMA2[L1] ? white : red
+plot(xSMA1_SMA2, style=histogram, linewidth=1, color=cClr)

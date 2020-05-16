@@ -1,0 +1,23 @@
+//Chande Trend Score
+//============================================
+
+
+study("Chande Trend Score",overlay=false)
+
+h=high
+c=close
+l=low
+o=open
+
+
+p=input(title="Smoothing Period",minval=3,maxval=600,defval=5,type=integer)
+
+CTS=(c>c[11]?1:-1) + (c>c[12]?1:-1) + (c>c[13]?1:-1) + (c>c[14]?1:-1) + (c>c[15]?1:-1) + (c>c[16]?1:-1) + (c>c[17]?1:-1) + (c>c[18]?1:-1) + (c>c[19]?1:-1) + (c>c[20]?1:-1)
+
+CTSM=wma(CTS,p)
+Histo=CTSM==10?5:CTSM==-10?-5:0
+
+plot(CTSM,style=line,color=orange,linewidth=2)
+plot(Histo,style=line,color=white)
+plot(12,style=line,color=white,linewidth=1)
+plot(-12,style=line,color=white,linewidth=1)

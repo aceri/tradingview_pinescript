@@ -1,0 +1,29 @@
+//Correlerror
+//============================================
+
+
+study("Correlerror",overlay=false)
+
+h=high
+c=close
+l=low
+o=open
+
+slope(a,b)=>(linreg(a,b,0)-linreg(a,b,0)[b])/b
+intercept()
+
+LB=input(title="Long Bar",minval=3,maxval=600,defval=20,type=integer)
+SB=input(title="Short Bar",minval=3,maxval=600,defval=50,type=integer)
+HL=highest(h,SB)-lowest(l,SB)
+MV=highest(volume,SB)-lowest(volume,SB)
+ratio=((h-l)/HL*volume/MV*c/o
+aa=linreg()
+bb=slope(ratio,SB)
+res=ratio-(aa+bb*ratio)
+corx=correlation(ratio,ratio-res,LB)
+Z=(corx-sma(corx,SB))/stdev(corx,SB)
+CI=Z*10
+
+bgcolor(cross(CI,-19),green)
+bgcolor(cross(CI,19),red)
+plot(CI,style=line,color=white,linewidth=2)

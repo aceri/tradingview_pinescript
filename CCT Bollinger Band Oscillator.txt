@@ -1,0 +1,16 @@
+//CCT Bollinger Band Oscillator
+//============================================
+
+
+study("CCT Bollinger Band Oscillator",overlay=false)
+
+h=high
+c=close
+l=low
+o=open
+
+
+p=input(title="Period",minval=5,maxval=600,defval=21,type=integer)
+
+g=100*(c+2*stdev(c,p)-sma(c,p))/(4*stdev(c,p))
+plot(g,style=line,color=white)

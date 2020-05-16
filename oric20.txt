@@ -1,0 +1,20 @@
+study("oric20")
+
+p=240
+sm=30
+p2=240
+sm2=30
+
+zs(a,b)=>(a-linreg(a,b,0))/stdev(a,b)
+dx(a,b)=>(a-b)/avg(a,b)
+
+zs1=zs(close,p)
+zs2=linreg(dx(close,open)*200,p2,0)
+//zs2=zs(close,p2)
+
+szs1=linreg(zs1,sm,1)
+szs2=linreg(zs2,sm2,1)
+k=linreg(close,p,0)
+//plot(k, color=yellow, style=line, linewidth=3)
+plot(szs1, color=white, style=line, linewidth=1)
+plot(szs2, color=orange, style=line, linewidth=1)

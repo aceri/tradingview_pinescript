@@ -1,0 +1,22 @@
+
+study("RatioLRCO",overlay=true)
+
+p=62
+
+thresL=0.000074319526902
+thresS=-0.00000028421627
+amp=5
+
+lr(a,b)=>linreg(a,b,0)
+diffx(a,b)=>(a-b)/((a+b)/2)
+
+
+ratio=diffx(close,open)
+lratio=lr(ratio,p)
+
+value=lratio>thresL?1:lratio<thresS?2:value[1]
+
+
+//plot(close,color=close[1]<close and value==1?red:close[1]>close and value==2?green:na,style=line, linewidth=2)
+
+plot(close,color=(value==1 )?green:(value==2 )?red:na,style=line, linewidth=3,transp=0)

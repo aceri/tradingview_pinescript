@@ -1,0 +1,10 @@
+//
+// @author LazyBear
+// 
+study(title = "Oscil", shorttitle="ForecastOsc_LB")
+pf=100*((close[0]-close[1])/close[0])
+//plot(pf, color=green)
+plot(sma(pf,3), color=orange)
+hline(0.5, color=gray)
+//hline(0)
+hline(-0.5, color=gray)

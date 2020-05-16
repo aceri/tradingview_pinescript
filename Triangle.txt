@@ -1,0 +1,35 @@
+//@version=2
+study("Triangle",overlay=true)
+
+lr(a,p)=>linreg(a,p,0)
+st(a,p)=>stdev(a,p)
+
+c=close
+
+IP=20
+OP=60
+IK=0.02
+OK=0.01
+
+hi=close
+lo=close
+
+innerhigh=lr(hi,IP)*(1+IK)
+innerlow=lr(lo,IP)*(1-IK)
+
+outerhigh=lr(hi,OP)*(1+OK)
+outerlow=lr(lo,OP)*(1-OK)
+
+ih=plot(innerhigh>outerhigh?outerhigh:innerhigh,style=line,color=red,transp=50)
+il=plot(innerlow<outerlow?outerlow:innerlow,style=line,color=green,transp=50)
+
+oh=plot(outerhigh,style=line,color=red,transp=50)
+ol=plot(outerlow,style=line,color=green,transp=50)
+
+
+fill(oh,ih,color=red,transp=50)
+fill(ol,il,color=green,transp=50)
+
+plot(c,color=white,style=line,linewidth=3)
+//plot(c,color=c>outerhigh?green:c>innerhigh and c<outerhigh?white:gray,style=line,linewidth=3)
+//plot(c,color=c<outerlow?red:c<innerlow and c>outerlow?white:gray,style=line,linewidth=3)

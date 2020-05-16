@@ -1,0 +1,18 @@
+study("The system no.1", shorttitle="System no.1", overlay=true)
+
+_length = input(title="Length", type=integer, defval=4)
+_offset = input(title="Offset", type=integer, defval=0)
+
+_length2 = input(title="Length2", type=integer, defval=46, minval=1)
+_offset2 = input(title="Offset2", type=integer, defval=0)
+
+_source = close
+
+_lsma1 = linreg(_source, _length, _offset)
+_lsma2 = linreg(_source,_length2,_offset2)
+_lsmaC = cross(_lsma1, _lsma2) ? (_lsma1 + _lsma2) * 0.5 : na
+//iscross() => _lsmaC
+plot(_lsma1, color=white, linewidth=2)
+plot(_lsma2, color=#2299CC, linewidth=2)
+plotshape(_lsmaC, color=green, style=shape.xcross)
+

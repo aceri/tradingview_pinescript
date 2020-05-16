@@ -1,0 +1,46 @@
+study(title = "RMIx",overlay=false)
+
+//•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•//   
+//                                             //
+//                RMI BY THELARK               //
+//                 ~ 2-19-14 ~                 //
+//                                             //
+//                     •/•                     //
+//                                             //
+//    https://www.tradingview.com/u/TheLark    //
+//                                             //
+//•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•/•//
+
+// Relative Momentum Index (RMI)
+// "... The Relative Momentum Index was developed by Roger Altman 
+// and was introduced in his article in the February, 1993 issue of 
+// Technical Analysis of Stocks & Commodities magazine. "
+// "... While RSI counts up and down days from close to close, the Relative 
+// Momentum Index counts up and down days from the close relative to a 
+// close x number of days ago. "
+
+// Requested by glaz @ TradingView
+
+// inputs 
+len = input(4, title="Length")
+mom = input(4, title="Momentum",minval=0)
+ob = input(40,title="Overbought")
+os = input(40,title="Oversold")
+c = close
+docol = input(true,title="Change Color?")
+dosignal = input(true,title="Show Signal Line?")
+sig = input(6,title="Signal Length")
+dohist = input(false,title="Show Hist?")
+//calc
+up = ema(max(c - c[mom],0),len)
+dn = ema(max(c[mom] - c,0),len)
+rmi = dn == 0 ? 0 : 100 - 100 / (1 + up / dn)
+signal = sma(rmi,sig)
+
+//plots
+hline(ob)
+hline(os)
+plot(dohist?(rmi-signal)+50:na,color=#FF006E,histbase=50,style=histogram,linewidth=2)
+plot(dosignal?signal:na,color=#D87A68)
+col = docol ? rmi > rmi[1] ? #0094FF : #FF006E : #0094FF
+plot(rmi, color=col,linewidth=2)

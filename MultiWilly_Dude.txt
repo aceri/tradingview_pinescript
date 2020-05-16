@@ -1,0 +1,35 @@
+//Customized willy w/ background change
+//Donate to TheDude's dude fund: 18yWuPhLr34AzunDUfYpy5XfrDeXoSFhR7
+ 
+study(title="MultiWilly_Dude", shorttitle="multiWilly_Dude")
+length = input(21, minval=1)
+upper = highest(length)
+lower = lowest(length)
+out = 100 * (close - upper) / (upper - lower)
+src = out, len = input(13, minval=1, title="Length")
+out2 = ema(out, len)
+ 
+outavg = (out+out2)/2
+ 
+outbtce = security("BTCE:BTCUSD",period, out)
+outbtce2 = ema(outbtce, len)
+outbtceavg = (outbtce+outbtce2)/2
+ 
+outavgtot = (outbtceavg+outavg)/2
+ 
+bolline = input(type=bool, defval=false, title="Color changing line")
+bolbackg = input(type=bool, defval=true, title="Color changing Background")
+e2 = outavg <= -75 ? green : outbtceavg <=-75 ? yellow :  outavg <= -25 ? na :outavg <=0 ? red : outbtceavg <= 0 ? yellow :  blue
+bgcolor(bolbackg ? e2 : na, transp=50)
+//plot(bolbackg, title="MFIvsRSI", style=line, linewidth=2, color=e2)
+//plot(mfiVSrsi2, title="MFIvsRSI", style=line, linewidth=1, color=e2)
+ 
+ 
+plot(out, color = white)
+plot(outbtce, color = gray, style=line, transp = 70)
+plot(out2, title="EMA", color=orange)
+plot(outbtce2, color=blue, transp = 70)
+ 
+band1 = hline(-25)
+band0 = hline(-75)
+fill(band1, band0)

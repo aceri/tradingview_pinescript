@@ -1,0 +1,23 @@
+//      Written by liw0 active on https://www.tradingview.com/u/liw0
+ 
+//      If you decide to use my script in your published charts,
+//      please keep this header as it is now and leave the name unchanged!
+//      It would make me happy to see my script put to use in other charts :)
+ 
+//      If you like it I would also be happy about a small donation
+//      BTC 1GyfGTBsVHMbPovFGFeipe7b7ET1aebGx5
+ 
+//      Questions or Comments? Just send me a PM!
+
+//      CREDITS: http://quant.stackexchange.com/questions/2816/how-to-calculate-time-segmented-volume
+
+study("Time Segmented Volume")
+
+l  = input(13, title="Length")
+l_ma = input(7, title="MA Length")
+
+t = sum(close>close[1]?volume*close-close[1]:close<close[1]?(volume*-1)*close-close:0,l)
+m = sma(t ,l_ma )
+
+plot(t, color=red)
+plot(m, color=green)

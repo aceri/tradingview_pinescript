@@ -1,0 +1,18 @@
+//Tom Demark's Demarker Indicator
+//============================================
+
+
+study("Tom Demark's Demarker Indicator",overlay=false)
+
+h=high
+c=close
+l=low
+o=open
+
+
+p=input(title="Smoothing Period",minval=3,maxval=600,defval=13,type=integer)
+
+highm=h>h[1]?h-h[1]:0
+lowm=l<l[1]?l[1]-l:0
+DeMarker=100*sum(highm,p)/(sum(lowm,p)+sum(highm,p))
+plot(DeMarker,style=line,color=orange,linewidth=2)

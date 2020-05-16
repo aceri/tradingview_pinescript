@@ -1,0 +1,23 @@
+//De Mark's Range Projection
+//============================================
+
+
+study("De Mark's Range Projection",overlay=true)
+
+H=high
+C=close
+L=low
+O=open
+
+MaxGraph=3
+rph1=(H+C+2*L)/2-L
+rph2=(2*H+L+C)/2-L
+rph3=(H+L+2*C)/2-L
+rpl1=(H+C+2*L)/2-H
+rpl2=(2*H+L+C)/2-H
+rpl3=(H+L+2*C)/2-H
+rph=C<O?rph1:C>O?rph2:rph3
+rpl=C<O?rpl1:C>O?rpl2:rpl3
+plot(rph,style=line,color=white)
+//plot(C,style=line,color=orange)
+plot(rpl,style=line,color=white)

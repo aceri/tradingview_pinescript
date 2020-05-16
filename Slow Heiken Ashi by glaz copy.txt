@@ -1,0 +1,20 @@
+study("Slow Heiken Ashi",overlay=true,precision=0)
+
+p=input(4,title='Period')
+
+dema(s,l) => 2*ema(s,l)-ema(ema(s,l),l)
+zld(a,b)=>2*dema(a,b)-dema(a,2*b-1)
+
+
+
+//vClose=linreg(close,p,0)
+vClose=close
+
+vOpen= linreg(vClose[1],p,0)
+
+// Plots
+vcolor= vOpen>vClose ?#B45F06:white
+
+
+plot(close,color=vcolor,style=line, linewidth=3)
+

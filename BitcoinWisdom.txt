@@ -1,0 +1,61 @@
+//@version=3
+study("BitconWisdom 4H",overlay=true)
+
+zlema(a,b)=>2*ema(a,b)-ema(a,(2*b)-1)
+valid(a,b,minb)=> cross(a,b)[minb] and a[minb+1]<b[minb+1] and sum(a>b?1:0,minb)>=minb
+
+p1=input(title="p1",type=integer,defval=2)
+p2=input(title="p2",type=integer,defval=46)
+p3=input(title="p3",type=integer,defval=79)
+
+p4=input(title="p4",type=integer,defval=64)
+p5=input(title="p5",type=integer,defval=71)
+p6=input(title="p6",type=integer,defval=55)
+
+s1=input(title="s1",type=integer,defval=2,minval=1,maxval=2)
+s2=input(title="s2",type=integer,defval=2,minval=1,maxval=2)
+
+mb=input(title="mb",type=integer,defval=1,minval=1,maxval=12)
+bb=input(title="bb",type=integer,defval=335)
+
+c_bb=s1==1?zlema(close,bb):ema(close,bb)
+bullbear=close>c_bb?1:0
+
+z1=p1
+z2=(p2+p1)
+z3=(p3+p2)
+
+t4=p4
+t5=(p5+p4)
+t6=(p6+p5)
+
+z6=t4
+z5=t5
+z4=t6
+
+v1=s1==1?zlema(close,z1):ema(close,z1)
+v2=s1==1?zlema(close,z2):ema(close,z2)
+v3=s1==1?zlema(close,z3):ema(close,z3)
+v4=s1==1?zlema(close,z4):ema(close,z4)
+v5=s1==1?zlema(close,z5):ema(close,z5)
+v6=s1==1?zlema(close,z6):ema(close,z6)
+
+vc1=valid(v1,v2,mb) or valid(v1,v3,mb) or valid(v2,v3,mb)
+vc2=valid(v4,v5,mb) or valid(v4,v6,mb) or valid(v5,v6,mb)
+vc3=valid(v2,v1,mb) or valid(v3,v1,mb) or valid(v3,v2,mb)
+vc4=valid(v5,v4,mb) or valid(v6,v4,mb) or valid(v6,v5,mb)
+
+hh=s2==1?0:1
+x1=bullbear==1?vc1:vc2
+x2=bullbear==hh?vc3:vc4
+
+plot(bullbear==1?v1:v4,color=green,linewidth=3)
+plot(bullbear==1?v2:v5,color=yellow,linewidth=3)
+plot(bullbear==1?v3:v6,color=orange,linewidth=3)
+
+vup(a,b,mb)=>crossover(a,b)[mb] and sum(a>b?1:0,mb)>=mb
+vdn(a,b,mb)=>crossunder(a,b)[mb] and sum(a<b?1:0,mb)>=mb
+
+plot(vc1 and bullbear==1?v1:vc2 and bullbear==1?v2:na, title="Cross", style=circles, linewidth=4, color=lime)
+plot(vc2 and bullbear==1?v4:vc4 and bullbear==1?v5:na, title="Cross", style=circles, linewidth=4, color=red)
+

@@ -1,0 +1,23 @@
+study(title="Shuriken", overlay=false)
+sma1 = sma(close, 90)
+sma2 = sma(close, 39)
+sma3 = sma(close, 8)
+sma4 = sma(close, 108)
+sma5 = sma(close, 61)
+delta=-47.307532
+bt=1.36573
+st=-0.270098
+diff1=100*(sma1-sma2)/((sma1+sma2)/2)
+diff2=100*(sma2-sma3)/((sma2+sma3)/2)
+diff3=100*(sma3-sma4)/((sma3+sma4)/2)
+diff4=100*(sma4-sma5)/((sma4+sma5)/2)
+ax=((diff1*4*delta)+(diff2*3*delta)+(diff3*2*delta)+(diff4*1*delta))/100
+
+plot(bt, style=line, transp = 60, color = green)
+plot(ax, style=line, transp = 60, color = white)
+plot(st, style=line, transp = 60, color = red)
+
+
+
+plot(cross(ax, bt) ? ax : na, style = cross, linewidth = 4)
+plot(cross(ax, st) ? ax : na, style = cross, linewidth = 4)

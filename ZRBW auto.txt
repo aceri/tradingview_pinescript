@@ -1,0 +1,18 @@
+//@version=2
+study("Rbw.LRW OK1h",overlay=false)
+adj=1
+a=close
+b1=26*adj
+b2=48*adj
+
+
+lr(a,b)=>linreg(a,b,0)
+
+L1=lr(a,b1)
+L2=lr(a,b2)
+
+plot(L1,color=white,style=line,linewidth=2)
+plot(L2,color=#B45F06,style=line,linewidth=2)
+
+bgcolor(color=crossover(L1,L2)?white:na,transp=45)
+bgcolor(color=crossunder(L1,L2)?#B45F06:na,transp=45)

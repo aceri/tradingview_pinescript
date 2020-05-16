@@ -1,0 +1,25 @@
+//		MultiTSI plots True Strengh Index average over multiple exchanges
+//		Script modded by TheDude: BTC 18yWuPhLr34AzunDUfYpy5XfrDeXoSFhR7
+//      Credits:
+//      liw0 (multiRSI): BTC 1GyfGTBsVHMbPovFGFeipe7b7ET1aebGx5
+//		lazybear (TSI) : BTC 1Cs5DJ7DGqYVBWaAt5rPuRcD66ULgVCFnx
+//      @credits http://en.wikipedia.org/wiki/True_strength_index
+// 
+study(title = "multiTSI", shorttitle="multiTSI", overlay=false)
+rA=input(25, title="Momentum Smoothing 1")
+sA=input(13, title="Momentum Smoothing 2")
+srcA=close
+mA=srcA-srcA[1]
+tsiA=100*(ema(ema(mA,rA),sA)/ema(ema(abs(mA), rA),sA))
+tsiB=security("BTCE:BTCUSD", period, tsiA)
+tsiavg = (tsiA+tsiB)/2
+ul=hline(25)
+ll=hline(-25)
+fill(ul,ll)
+plot(tsiA, color=lime)
+plot(tsiB, color=red)
+plot(tsiavg, color=white)
+
+bg = input(type=bool, defval=true)
+e2 = tsiA >=25 ? red : tsiA > -25 ? na : tsiA <=-25 ? green : blue
+bgcolor(bg ? e2 : na, transp=50)

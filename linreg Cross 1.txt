@@ -1,0 +1,36 @@
+//@version=2
+strategy("linreg cross", overlay=true)
+len1=input(title="(e/S)MA1 length", type=integer, defval=144)             //1 min Good values- 4ema/9sma/1.5 block size, 12-20-0 EMA/SMA, Alligator1:2-13-8 ema/smma,alligator2: 2-8-5 ema/smma, alligator3:2-5-3 ema/smma
+len2=input(title="(E/S)MA2 length", type=integer,defval=162)              // 1.4 Block size, 3ema/5sma - 4/6-4/12 17%
+lag=input(title="Linreg2 lag", type=integer,defval=2)                 // 3 min 4ema/9sma 60% 0.8 box 3/29-4/12
+int2=input(title="Linreg2 Intercept", type=integer, defval=4)
+src1= input(close)
+src2=input(close)[lag]
+ 
+ma1=linreg(src1,len1,0)
+ma2=linreg(src2,len2,int2)
+ 
+ 
+// Logic Evaluation
+b = crossover(ma1,ma2)
+s = crossunder(ma1,ma2)
+buy = b and n-valuewhen(s, n, 0)>barssince(b) and n-valuewhen(b, n, 1)>barssince(s)
+sel = s and n-valuewhen(b, n, 0)>barssince(s) and n-valuewhen(s, n, 1)>barssince(b)
+ 
+ 
+ 
+longCondition = b
+if (longCondition)
+    strategy.entry("Long", strategy.long)
+ 
+shortCondition = s
+if (shortCondition)
+    strategy.entry("Short", strategy.short)
+ 
+ 
+// Plotting
+plot(sel?ma1:na, title="CROSS DOWN", linewidth=10, color=red, style=circles, transp=10)
+plot(buy?ma2:na, title="CROSS UP", linewidth=10, color=lime, style=circles, transp=10)
+ 
+plot(ma1,"ma1", lime, linewidth=3)
+plot(ma2, "ma2", red, linewidth=3)

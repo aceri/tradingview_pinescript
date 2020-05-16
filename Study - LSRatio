@@ -1,0 +1,69 @@
+//@version=3
+# -----------------------------------------------------------------------
+# Study - LSRatio
+# Normalized ratios / or slope equivalent of different ratios to see how they compare with instrument BTCUSD
+# -----------------------------------------------------------------------
+# Bitfinex: BTCUSDLONGS - Number of longs
+# Bitfinex: BTCUSDHSORTS - Number of Shorts
+# BTC.D: Bitcoin Domination percent of all cryptocurrency market
+# USDT.D: USD Tether Domination percent of all cryptocurrency market
+# Close: BTCUSD close price
+# USDT: Monetary issuance of USD Tether
+# USDTUSD: Ratio between USDT (Tether) and the Real Dollar
+# USDT/TOTAL and TOTAL2 USDT compared with all cryptomarket
+# BTC.D/USDT.D: Bitcoin domination ratio vs USDT domination ratio
+# Ratio USDT issuance against BTCUSDLONGS
+# Ratio USDT issuance against BTCUSDSHORTS
+# -----------------------------------------------------------------------
+
+study("LSRatio")
+val1=security("BITFINEX:BTCUSDLONGS","D",close)
+val2=security("BITFINEX:BTCUSDSHORTS","D",close)
+val3=security("BTC.D","D",close)
+val4=security("USDT.D","D",close)
+val5=close
+val6=security("USDT","D",close)
+val8=security("USDTUSD","D",close)
+val9=security("USDT/TOTAL","D",close)
+val10=security("USDT/TOTAL2","D",close)
+val11=security("BTC.D/USDT.D","D",close)
+val12=security("USDT/BTCUSDLONGS","D",close)
+val13=security("USDT/BTCUSDSHORTS","D",close)
+
+
+p1=input(title="Norm Period1",type=integer,defval=365,minval=10,maxval=1000)
+
+
+norm(s,p) => (s-lowest(s,p))/(highest(s,p)-lowest(s,p))
+slope(a,b)=>(linreg(a,b,0)-linreg(a,b,0)[b])/b
+dx(a,b)=>(a-b)/((a+b)/2)
+
+n1=slope(val1,p1)
+n2=slope(val2,p1)
+x12=slope(val1-val2,p1)
+n3=slope(val3,p1)
+n4=slope(val4,p1)
+n5=slope(close,p1)
+n6=slope(val6,p1)
+n7=slope(val5,p1)-slope(val6,p1)
+n8=slope(val8,p1)
+n9=slope(val9,p1)
+n10=slope(val10,p1)
+n11=slope(val11,p1)
+n12=slope(val12,p1)
+n13=slope(val13,p1)
+
+plot(n1,color=green,title="BTCUSDLONGS")
+plot(n2,color=red,title="BTCUSDSHORTS")
+plot(x12,color=yellow,title="Ratio LS")
+plot(n3,color=orange,title="BTC Dom")
+plot(n4,color=aqua,title="USDT Dom")
+plot(n5,color=white,title="BTCUSD")
+plot(n6,color=fuchsia,title="USDT")
+plot(n7,color=lime,title="Slope BTCUSD- Slope USDT")
+plot(n8,color=aqua,title="USDTUSD")
+plot(n9,color=purple,title="USDT/TOTAL")
+plot(n10,color=navy,title="USDT/TOTAL2")
+plot(n11,color=blue,title="BTC.D/USDT.D")
+plot(n12,color=silver,title="USDT/LONGS")
+plot(n13,color=maroon,title="USDT/SHORTS")

@@ -1,0 +1,45 @@
+study("Balance of Power",overlay=false)
+
+H=high
+L=low
+O=open
+C=close
+
+norm(a,b)=>100*(a-lowest(a,b))/(highest(a,b)-lowest(a,b))
+zs(a,b)=>(a-linreg(a,b,0))/stdev(a,b)
+
+THL = H != L? H - L: 0.01
+
+//----- Reward based on Open
+BullOpen = (H - O)/THL
+BearOpen = (O - L)/THL
+
+//----- Reward based on Close
+BullClose = (C - L)/THL
+BearClose = (H - C)/THL
+
+//----- Reward based on Open - Close
+BullOC =C > O? (C - O)/THL: 0
+BearOC =O > C? (O - C)/THL: 0
+BullReward = (BullOpen + BullClose + BullOC)/3
+BearReward = (BearOpen + BearClose + BearOC)/3
+
+BOP = BullReward - BearReward
+
+P1 = 300
+N1 = 300
+Smooth=10
+Sm = linreg(zs(linreg(BOP, P1,0),N1),Smooth,0)
+
+HL=2.5
+ML=0
+LL=-2.5
+
+plot(Sm, color=Sm>ML and Sm<HL?gray:Sm<ML and Sm>LL?gray:Sm>HL?white:Sm<LL?white:na, style=histogram)
+
+
+plot(ML, color=gray,style=line,linewidth=1)
+plot(HL, color=gray,style=line,linewidth=1)
+plot(LL, color=gray,style=line,linewidth=1)
+
+//plot(LBar, color=gray,style=line,linewidth=1)

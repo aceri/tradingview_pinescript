@@ -1,0 +1,13 @@
+// 
+// @author LazyBear, custom by Jozzaboy
+// 
+study("CCI coded OBV", shorttitle="UltimaOmega")
+src = close
+length = input(20, minval=1, title="CCI Length")
+threshold=input(0, title="CCI threshold for OBV coding")
+obv(src) => 
+    cum(change(src) > 0 ? volume : change(src) < 0 ? -volume : 0*volume)
+    
+o=obv(src)
+c=cci(src, length)
+plot(o, color=c>=threshold?green:red, title="OBV_CCI coded", linewidth=2)

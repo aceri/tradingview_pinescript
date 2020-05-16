@@ -1,0 +1,34 @@
+//@version=2
+
+//Should I Panic?? (number of revisited candles in a timeframe)
+//=============================================================
+//idea: hecate
+//I fomo way too much so i have created this little indicator to show me how many times (PERCENT) a candle is revisited in a period P
+//with the idea that i should not panic and maybe just wait patiently for a better price.
+//Just set the period P to your desired timeframe, days hours, whatever and WAIT patiently because many times it does come back :D and many times !!
+
+study("Percent Candles Not Revisited Past Week",overlay=false)
+
+c=input(close)
+barsback=input(title="Barsback Period (def is num of hours in a day)",type=integer,defval=672,minval=10,maxval=800)
+pct=input(title="Pct High/Up to compare [0-100]",defval=0.25,maxval=100,minval=0)
+
+z(a,b)=>(a-linreg(a,b,0))/stdev(a,b)
+
+revisit(a,b,p)=>
+    tot=0
+    for i = 1 to p-1
+        if(cross(a,b[i]))
+            tot:=tot+1
+    return = tot
+
+
+rc=revisit(c,c,barsback)
+
+numc0=sum(rc<1?1:0,barsback)*100/barsback
+numc1=sum(rc<2?1:0,barsback)*100/barsback
+numc2=sum(rc<3?1:0,barsback)*100/barsback
+
+plot(numc0,style=line,color=white,linewidth=1,transp=0)
+plot(numc1,style=line,color=yellow,linewidth=1,transp=0)
+plot(numc2,style=line,color=orange,linewidth=1,transp=0)

@@ -1,0 +1,22 @@
+study(title="ematema", overlay=true)
+
+Base=input(6,title="Base Smoothing")
+Sline=input(10,title="Short EMA Line")
+Lline=input(14,title="Long EMA Line")
+
+Aema1=ema(close,Base)
+Aema2=ema(Aema1,Base)
+Aema3=ema(Aema2,Base)
+Atema1=3*(Aema1-Aema2)+Aema3
+
+Bema1=ema(close,Base)
+Bema2=ema(Aema1,Base)
+Bema3=ema(Aema2,Base)
+Btema1=3*(Aema1-Aema2)+Aema3
+
+
+short = ema(Atema1, Sline)
+long = ema(Btema1, Lline)
+plot(short, color = red)
+plot(long, color = green)
+plot(cross(short, long) ? short : na, style = cross, linewidth = 4)

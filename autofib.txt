@@ -1,0 +1,21 @@
+//Auto Fib Trends
+//Contribute to TheDude's dude fund: BTC 18yWuPhLr34AzunDUfYpy5XfrDeXoSFhR7
+ 
+study(shorttitle="autofib", title="autofib", overlay=true)
+ 
+length = input(150, minval=1)
+upper = highest(length)
+lower = lowest(length)
+ 
+fib5   = (upper-lower)*0.5
+fib618  = (upper-lower)*0.618
+fib764  = (upper-lower)*0.764
+ 
+plot(upper, color=purple, title='Upper')
+plot(lower, color=maroon, title='Lower')
+ 
+plot(lower+fib764, color=blue, title='0.764')
+plot(lower+fib618, color=teal, title='0.618')
+plot(lower+fib5, color=green, title='0.5')
+plot(upper-fib618, color=yellow, title='0.382')
+plot(upper-fib764, color=red, title='0.236')

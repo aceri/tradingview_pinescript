@@ -1,0 +1,39 @@
+//      Written by liw0 active on https://www.tradingview.com/u/liw0
+ 
+//      If you decide to use my script in your published charts,
+//      please keep this header as it is now and leave the name unchanged!
+//      It would make me happy to see my script put to use in other charts :)
+ 
+//      If you like it I would also be happy about a small donation
+//      BTC 1GyfGTBsVHMbPovFGFeipe7b7ET1aebGx5
+ 
+//      Questions or Comments? Just send me a PM!
+
+study(title="multiRSI", shorttitle="multiRSI")
+
+//INPUTS
+src = hlc3, len = input(14, minval=1, title="Length")
+avg_bol = input(true, title="Average RSI Line")
+rsi_bol = input(false, title="Seperate RSI lines")
+bolbackg = input(true, title="OS/OB Background Changer")
+
+//CALCS
+up = rma(max(change(src), 0), len)
+down = rma(-min(change(src), 0), len)
+rsi = down == 0 ? 100 : up == 0 ? 0 : 100 - (100 / (1 + up / down))
+rsib = security("BTCE:BTCUSD", period, rsi) // CALCULATE RSI FOR BITSTAMP
+val1= abs(rsib-rsi)
+col = val1 > 5.8251 and rsi > rsib ? red : val1 > 5.8251 and rsi < rsib ? green : white
+
+//PLOTTING
+plot(rsi_bol?rsi:na, color=red, linewidth=1)
+plot(rsi_bol?rsib:na, color=lime, linewidth=1)
+plot(avg_bol?(rsi+rsib)/2:na, color=col, linewidth=1) // simple average (a+b)/2
+
+//RSI BANDS
+band1 = hline(75)
+band0 = hline(25)
+//fill(band1, band0, color=#0A5394, transp=90)
+
+clrbg = rsi > 65 ? red : rsi < 35 ? green : na
+bgcolor(bolbackg ? clrbg : na, transp=50)

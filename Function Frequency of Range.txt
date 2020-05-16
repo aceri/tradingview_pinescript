@@ -1,0 +1,19 @@
+//@version=2
+study(title='Function Frequency of Range', overlay=false)
+src = input(close)
+length = input(10)
+
+f_frequency_of_range(_src, _upper, _lower, _length)=>
+    _adjusted_length = _length < 1 ? 1 : _length
+    _frequency = 0
+    for _i = 0 to _adjusted_length-1
+        if (_src[_i] >= _lower and _src[_i] <= _upper)
+            _frequency := _frequency + 1
+    _return = nz(_frequency, 0)/_adjusted_length
+
+h = highest(src, length)
+l = lowest(src, length)
+r = h-l
+f = f_frequency_of_range(src, l+r*0.1, l, length)
+
+plot(f)

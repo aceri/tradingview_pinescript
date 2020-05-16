@@ -1,0 +1,38 @@
+study("zsx")
+
+k=15
+
+data1=rsi(close,28)/linreg(close,56,1)
+
+data2=close
+
+p4=60*k*4
+p3=50*k*3
+p2=40*k*2
+p1=20*k*1
+
+//pr1=0.84375
+pr1=1.6 
+pr2=2 
+pr3=2.5 
+pr4=6
+
+
+
+
+zs1=(data1-linreg(data1,p1,1))/stdev(data1,p1)
+zs2=(data2-linreg(data2,p1,1))/stdev(data2,p1)
+
+zsx=linreg(rsi(data1/data2,28),10,1)
+
+c1=abs(zsx)<pr1?white:abs(zsx)>pr1 and abs(zsx)<pr2?yellow:abs(zsx)>pr2 and abs(zsx)<pr3?orange:red
+//c2=abs(zs2)<pr1?white:abs(zs2)>pr1 and abs(zs2)<pr2?yellow:abs(zs2)>pr2 and abs(zs2)<pr3?orange:red
+//c3=abs(zs3)<pr1?white:abs(zs3)>pr1 and abs(zs3)<pr2?yellow:abs(zs3)>pr2 and abs(zs3)<pr3?orange:red
+//c4=abs(zs4)<pr1?white:abs(zs4)>pr1 and abs(zs4)<pr2?yellow:abs(zs4)>pr2 and abs(zs4)<pr3?orange:red
+
+plot(zsx, color=c1,style=line, linewidth=p1*5/p4/2)
+plot(rsi(close,28), color=white,style=line, linewidth=p1*5/p4/2)
+//plot(zs2, color=c2, style=line, linewidth=p2*5/p4/2)
+//plot(zs3, color=c3, style=line, linewidth=p3*5/p4/2)
+//plot(zs4, color=c4, style=line, linewidth=p4*5/p4/2)
+

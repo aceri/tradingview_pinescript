@@ -1,0 +1,37 @@
+// Original script by chrismoody modified by TheDude
+
+// Rules = Iff EMAFast>=EmaMedium and EMA Medium>= EMA Slow THEN Color = Lime - Showing Up Trend
+// Rules = Iff EMAFast < EmaMedium and EMA Medium < EMA Slow THEN Color = Fuchsia - Showing Down Trend
+// If Rules Are Not True then Color = Yellow Showing NO TREND
+
+study(title = "EMAx6", shorttitle="EMAx6", overlay=true)
+
+src = close, len = input(8, minval=1, title="Fast EMA")
+src2 = close, len2 = input(21, minval=1, title="Medium EMA")
+src3 = close, len3 = input(34, minval=1, title="Slow EMA")
+src4 = close, len4 = input(100, minval=1, title="Long EMA 1")
+src5 = close, len5 = input(200, minval=1, title="Long EMA 2")
+src6 = close, len6 = input(300, minval=1, title="Long EMA 3")
+
+emaFast = ema(src, len)
+emaMedium = ema(src2, len2)
+emaSlow = ema(src3, len3)
+ema4 = ema(src4,len4)
+ema5 = ema(src5,len5)
+ema6 = ema(src6,len6)
+
+plot_color = emaFast >= emaMedium and emaMedium >= emaSlow ? lime : emaFast < emaMedium and emaMedium < emaSlow ? red : yellow
+plot_color2= ema4 >= ema5 and ema5>= ema6 ? lime: ema4 < ema5 and ema5 < ema6 ? red :yellow
+
+p1 = plot(emaFast, title="EMA Fastt", style=line, linewidth=1, color = plot_color)
+p2 = plot(emaMedium, title="EMA Medium", style=line, linewidth=1, color = plot_color)
+p3 = plot(emaSlow, title="EMA Slow", style=line, linewidth=1, color = plot_color)
+
+p4 = plot(ema4, title="EMA4", style=line, linewidth=1, color = plot_color2)
+p5 = plot(ema5, title="EMA5", style=line, linewidth=1, color = plot_color2)
+p6 = plot(ema6, title="EMA6", style=line, linewidth=1, color = plot_color2)
+
+fill(p1, p2, color=silver, transp=90, title="Fill")
+fill(p2, p3, color=white, transp=80, title="Fill")
+fill(p4, p5, color=silver, transp=90, title="Fill")
+fill(p5, p6, color=white, transp=80, title="Fill")

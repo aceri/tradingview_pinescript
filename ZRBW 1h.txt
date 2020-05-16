@@ -1,0 +1,20 @@
+//@version=2
+study("Rbw.LRW OK1h",overlay=false)
+adj=period=='240'?0.25:period=='120'?0.5:period=='60'?1:period=='30'?2:period=='15'?4:period=='5'?12:period=='10'?6:period=='1'?60:period=='3'?20:period=='2'?30:1
+
+
+a=close
+b1=round(26*adj)
+b2=round(48*adj)
+
+
+lr(a,b)=>linreg(a,b,0)
+
+L1=lr(a,b1)
+L2=lr(a,b2)
+
+plot(L1,color=white,style=line,linewidth=2)
+plot(L2,color=#B45F06,style=line,linewidth=2)
+
+bgcolor(color=crossover(L1,L2)?white:na,transp=45)
+bgcolor(color=crossunder(L1,L2)?#B45F06:na,transp=45)

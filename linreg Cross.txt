@@ -1,0 +1,48 @@
+//@version=2
+strategy("linreg cross", overlay=true)
+len1=input(title="(e/S)MA1 length", type=integer, defval=144)             //1 min Good values- 4ema/9sma/1.5 block size, 12-20-0 EMA/SMA, Alligator1:2-13-8 ema/smma,alligator2: 2-8-5 ema/smma, alligator3:2-5-3 ema/smma
+len2=input(title="(E/S)MA2 length", type=integer,defval=162)              // 1.4 Block size, 3ema/5sma - 4/6-4/12 17%
+offset=input(title="MA2 offset", type=integer,defval=2)                 // 3 min 4ema/9sma 60% 0.8 box 3/29-4/12
+src1= input(close)
+src2=input(close)
+n1=input(10, title="Trade Amount")
+n2=input(.000, title="Trading Fee")
+ 
+//smma1 = na(smma1[1]) ? ema(src1, len1) : (smma1[1] * (len1 - 1) + src1) / len1  //Change to EMA or SMA to test
+//smma1 = na(smma1[1]) ? =sma(sma(src1,len1),len1) : (smma1[1] * (len1 - 1) + src1) / len1  //Triangular MA
+//smma2 = na(smma2[1]) ? sma(src2, len2) : (smma2[1] * (len2 - 1) + src2) / len2
+//smma2 = na(smma2[1]) ? sma(sma(src2,len2),len2)  : (smma2[1] * (len2 - 1) + src2) / len2  //Triangular MA
+//ma1=2*ema(src1,len1)-ema(ema(src1,len1),len1)
+//ma2a=2*ema(src2,len2)-ema(ema(src2,len2),len2)
+//ma1=sma(sma(src1,len1),len1)
+//ma2a=sma(sma(src2,len2),len2)
+//ma2=offset(ma2a,offset)
+ 
+ma1=linreg(src1,len1,0)
+ma2=linreg(src2,len2,0)
+ 
+// Logic Evaluation
+b = cross(ma1,ma2) and ma1>ma2
+s = cross(ma1,ma2) and ma1<ma2
+buy = b and n-valuewhen(s, n, 0)>barssince(b) and n-valuewhen(b, n, 1)>barssince(s)
+sel = s and n-valuewhen(b, n, 0)>barssince(s) and n-valuewhen(s, n, 1)>barssince(b)
+daytrade = change(dayofmonth)?0:buy?1+daytrade[1]:sel?1+daytrade[1]:daytrade[1]
+ 
+// Coloring
+isUp= close>open
+ 
+longCondition = crossover(ma1,ma2)
+if (longCondition)
+    strategy.entry("My Long Entry Id", strategy.long)
+ 
+shortCondition = crossunder(ma1,ma2)
+if (shortCondition)
+    strategy.entry("My Short Entry Id", strategy.short)
+ 
+ 
+// Plotting
+plot(sel?ma1:na, title="CROSS DOWN", linewidth=10, color=red, style=circles, transp=10)
+plot(buy?ma2:na, title="CROSS UP", linewidth=10, color=lime, style=circles, transp=10)
+plotshape(cross(ma1, ma2), color=isUp ? lime : red,style=shape.arrowup,location=location.belowbar)
+plot(ma1,"ma1", lime, linewidth=3)
+plot(ma2, "ma2", red, linewidth=3)

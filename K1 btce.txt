@@ -1,0 +1,23 @@
+study(title="K1 btce", overlay=false)
+sma1 = sma(close, 5)
+sma2 = sma(close, 5)
+sma3 = sma(close, 6)
+sma4 = sma(close, 6)
+sma5 = sma(close, 100)
+delta=8.47749694
+bt=31.53968391
+st=-17.88846694
+diff1=100*(sma1-sma2)/((sma1+sma2)/2)
+diff2=100*(sma2-sma3)/((sma2+sma3)/2)
+diff3=100*(sma3-sma4)/((sma3+sma4)/2)
+diff4=100*(sma4-sma5)/((sma4+sma5)/2)
+ax=(diff1*4*delta)+(diff2*3*delta)+(diff3*2*delta)+(diff4*1*delta)
+
+plot(bt, style=line, transp = 60, color = green)
+plot(ax, style=line, transp = 60, color = white)
+plot(st, style=line, transp = 60, color = red)
+
+
+
+plot(cross(ax, bt) ? ax : na, style = cross, linewidth = 4)
+plot(cross(ax, st) ? ax : na, style = cross, linewidth = 4)

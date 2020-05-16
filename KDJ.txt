@@ -1,0 +1,31 @@
+//      Written by liw0 active on https://www.tradingview.com/u/liw0
+ 
+//      If you decide to use my script in your published charts,
+//      please keep this header as it is now and leave the name unchanged!
+//      It would make me happy to see my script put to use in other charts :)
+ 
+//      If you like it I would also be happy about a small donation
+//      BTC 1GyfGTBsVHMbPovFGFeipe7b7ET1aebGx5
+ 
+//      Questions or Comments? Just send me a PM!
+
+
+study(title = "KDJ", overlay=false)
+
+k_length = input(9, title="K") // K Length
+d_sma = input(3, title="D")
+smt = input(5, title="Smoothing")
+
+K = ema((close - lowest(k_length))/(highest(k_length) - lowest(k_length)) * 100,smt)
+D = sma(K,d_sma)
+J = 3 * D  - 2 * K
+
+plot(K, color=red, title="K")
+plot(D, color=green, title="D")
+plot(J, color=blue, title="J")
+
+band0 = hline(0)
+band1 = hline(20)
+band2 = hline(80)
+band3 = hline(100)
+fill(band1, band2)

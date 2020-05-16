@@ -1,0 +1,22 @@
+study("Slope")
+lrp = input(0, title="Linear Regression Period")
+stf = lrp
+lr = linreg(close, lrp, 0)
+ch = lr-lr[stf]
+
+p1=50
+p2=150
+
+ratio1=linreg(linreg(close/open,p1,0),p1,0)
+ratio2=linreg(linreg(close/open,p2,0),p2,0)
+
+zs(a,b)=>(a-linreg(a,b,0))/stdev(a,b)
+
+r=ch/stf
+
+//plot(r, style=line, color=r>r[1]?white:red)
+//plot(zs(ch/stf,lrp*4), style=line, color=yellow)
+plot(ratio1, style=line, color=white,linewidth=2)
+plot(ratio2, style=line, color=orange,linewidth=2)
+//hline(0)
+

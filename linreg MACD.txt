@@ -1,0 +1,43 @@
+//@version=2
+strategy("linreg MACD")
+len1=input(title="MA1 length", type=integer, defval=30)   //140          //1 min Good values- 4ema/9sma/1.5 block size, 12-20-0 EMA/SMA, Alligator1:2-13-8 ema/smma,alligator2: 2-8-5 ema/smma, alligator3:2-5-3 ema/smma
+len2=input(title="MA2 length", type=integer,defval=50)     //180             // 1.4 Block size, 3ema/5sma - 4/6-4/12 17%
+offset=input(title="linreg2 offset", type=integer, defval=0)
+lag=input(title="MA2 Lag", type=integer,defval=0)                 // 3 min 4ema/9sma 60% 0.8 box 3/29-4/12
+macdoff=input(title="MACD offset",type=integer, defval=1)
+src1= input(close)
+src2=input(close)[lag]
+ 
+ 
+ 
+ma1=linreg(src1,len1,0)
+ma2=linreg(src2,len2,offset)
+macd = sma((ma1-ma2),2)
+macd2 = macd[macdoff]
+// Logic Evaluation
+//b = crossover(ma1,ma2)
+//s = crossunder(ma1,ma2)
+b=crossover(macd,macd2)
+s=crossunder(macd,macd2)
+/// for programming alerts
+buy = b and n-valuewhen(s, n, 0)>barssince(b) and n-valuewhen(b, n, 1)>barssince(s)
+sel = s and n-valuewhen(b, n, 0)>barssince(s) and n-valuewhen(s, n, 1)>barssince(b)
+ 
+ 
+ 
+longCondition = b
+if (longCondition)
+    strategy.entry("My Long Entry Id", strategy.long)
+ 
+shortCondition = s
+if (shortCondition)
+    strategy.entry("My Short Entry Id", strategy.short)
+ 
+ 
+// Plotting
+plot(sel?macd:na, title="CROSS DOWN", linewidth=10, color=red, style=circles, transp=10)
+plot(buy?macd2:na, title="CROSS UP", linewidth=10, color=lime, style=circles, transp=10)
+//plot(ma1,"ma1", lime, linewidth=3)
+//plot(ma2, "ma2", red, linewidth=3)
+plot(macd, "macd", blue,  linewidth=3)
+plot(macd2, "macd2", red,   linewidth=3)

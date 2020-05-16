@@ -1,0 +1,6 @@
+study(title="MA Cross", overlay=true)
+short = sma(close, 643)
+long = sma(close, 13)
+plot(short, color = red)
+plot(long, color = green)
+plot(cross(short, long) ? short : na, style = cross, linewidth = 4)
