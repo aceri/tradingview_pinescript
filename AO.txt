@@ -1,3 +1,4 @@
+//@version=3
 ////////////////////////////////////////////////////////////
 //  Copyright by HPotter v1.0 15/04/2014
 //    This indicator is based on Bill Williams` recommendations from his book 
